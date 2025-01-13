@@ -10,13 +10,16 @@ Code which creates trading signals based on the above indicators: /src/pypm/sign
 
 Classes to simulate an active/closed position on a given asset, and a portfolio with a list of said positions, to record performance over a period of time: /src/pypm/portfolio.py
 
+
 Class for the simulator itself, simulating (only long) positions, buying and selling based on generated signals while recording results in its PorfolioHistory: /src/pypm/simulation.py
 
 File with an example of a simulation run over a period of 10 years, iterated daily, with a simple signal based on only Bollinger Bands and a simple metric based on only Sharpe Ratio: /src/simulate_portfolio.py
 
+
 Code for running multiple simulations, each with different values for indicators - to determine which combination of indicators and indicator-parameters yields the best results: /src/pypm/optimization.py
 
 File with an example of an optimization run on only Bollinger Bands and Sharpe Ratio, where simulations are run on every possible combination of Bollinger n-value (n=SMA-period of middle band line) from [10, 20,..., 100], and Sharpe Benchmark Rate [10, 20,..., 100]. Determines which combination of Bollinger-n and Sharpe BR yields the best portfolio results. 
+
 
 
 Much of the code currently used is sourced from Chris Conlan's Algorithmic Trading with Python (https://github.com/chrisconlan/algorithmic-trading-with-python) - his instructions on the code and math involved are detailed in his book of the same name.
