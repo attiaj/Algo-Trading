@@ -4,6 +4,7 @@ from typing import Tuple, List, Dict, Callable, NewType, Any
 
 def simulate_portfolio():
 
+    print("test change")
     bollinger_n = 20
     sharpe_n = 100
 
