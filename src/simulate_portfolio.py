@@ -6,19 +6,24 @@ def simulate_portfolio():
 
     print("test change")
     bollinger_n = 20
+    #sharpe_n = 100
     sharpe_n = 100
+    #According to optimize_portfolio.py, the best results come with a bollinger_n of 20 and a sharpe_n of 80, so let's see the difference
 
-    # Load in data
+    # Load in data (row = date, column = symbol)
     symbols: List[str] = data_io.get_all_symbols()
     prices: pd.DataFrame = data_io.load_eod_matrix(symbols)
+    #print(prices)
 
     # Use the Bollinger Band outer band crossover as a signal
     _bollinger = signals.create_bollinger_band_signal
     signal = prices.apply(_bollinger, args=(bollinger_n,), axis=0)
+    #print(signal)
 
     # Use a rolling sharpe ratio approximation as a preference matrix
     _sharpe = metrics.calculate_rolling_sharpe_ratio
     preference = prices.apply(_sharpe, args=(sharpe_n, ), axis=0)
+    #print(preference)
 
     # Run the simulator
     simulator = simulation.SimpleSimulator(
