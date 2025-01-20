@@ -36,3 +36,21 @@ def create_bollinger_band_signal(series: pd.Series, n: int=20) -> pd.Series:
     buy = series < bollinger_bands['lower']
     return (1*buy - 1*sell)
 
+def create_bollinger_macd_signal(series: pd.Series, n: int=20, n1: int=5, n2: int=34) -> pd.Series:
+    
+    bollinger_bands = calculate_bollinger_bands(series, n)
+    sell = series > bollinger_bands['upper']
+    buy = series < bollinger_bands['lower']
+    bollinger_signal = (1*buy - 1*sell)
+    #print(bollinger_signal)
+    
+    macd = calculate_macd_oscillator(series, n1, n2)
+    macd_sign = np.sign(macd)
+    macd_shifted_sign = macd_sign.shift(1, axis=0)
+    macd_signal = macd_sign * (macd_sign != macd_shifted_sign)
+    #print(macd_signal)
+
+    combined_signal = bollinger_signal.combine(macd_signal, lambda x, y: 0 if x!=y else x)
+    #print(combined_signal)
+
+    return combined_signal
