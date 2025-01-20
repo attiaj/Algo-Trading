@@ -31,26 +31,30 @@ def create_bollinger_band_signal(series: pd.Series, n: int=20) -> pd.Series:
     Bollinger bands. Generate a buy signal when the price is below the lower 
     band, and a sell signal when the price is above the upper band.
     """
+
     bollinger_bands = calculate_bollinger_bands(series, n)
     sell = series > bollinger_bands['upper']
     buy = series < bollinger_bands['lower']
     return (1*buy - 1*sell)
 
 def create_bollinger_macd_signal(series: pd.Series, n: int=20, n1: int=5, n2: int=34) -> pd.Series:
-    
+    """
+    Creates a combination of macd and bollinger signal, returning 1 or -1 ONLY when both signals
+    return it, otherwise returning a 0. "If bollinger and macd signal both say to buy/sell, then do so,
+    otherwise, do not do anything."
+    """
+
     bollinger_bands = calculate_bollinger_bands(series, n)
     sell = series > bollinger_bands['upper']
     buy = series < bollinger_bands['lower']
     bollinger_signal = (1*buy - 1*sell)
-    #print(bollinger_signal)
     
     macd = calculate_macd_oscillator(series, n1, n2)
     macd_sign = np.sign(macd)
     macd_shifted_sign = macd_sign.shift(1, axis=0)
     macd_signal = macd_sign * (macd_sign != macd_shifted_sign)
-    #print(macd_signal)
 
+    #lambda here to compare values within bollinger/macd series, and set them to 0
+    #in the combination if they do not agree
     combined_signal = bollinger_signal.combine(macd_signal, lambda x, y: 0 if x!=y else x)
-    #print(combined_signal)
-
     return combined_signal
