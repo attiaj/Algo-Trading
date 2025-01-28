@@ -18,7 +18,8 @@ def bind_simulator(**sim_kwargs) -> Callable:
 
     _bollinger: Callable = signals.create_bollinger_band_signal
     _sharpe: Callable = metrics.calculate_rolling_sharpe_ratio
-
+    
+    #Test commit
     def _simulate(bollinger_n: int, sharpe_n: int) -> Performance:
         
         signal = prices.apply(_bollinger, args=(bollinger_n,), axis=0)
