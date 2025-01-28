@@ -22,4 +22,4 @@ File with an example of an optimization run on only Bollinger Bands and Sharpe R
 
 
 
-Much of the code currently used is sourced from Chris Conlan's Algorithmic Trading with Python (https://github.com/chrisconlan/algorithmic-trading-with-python) - his instructions on the code and math involved are detailed in his book of the same name.
+Much of the code currently used is sourced from Chris Conlan's Algorithmic Trading with Python - his instructions on the code and math involved are detailed in his book of the same name.
