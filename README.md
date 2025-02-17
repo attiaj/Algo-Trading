@@ -16,7 +16,7 @@ Class for the simulator itself, simulating (only long) positions, buying and sel
 File with an example of a simulation run over a period of 10 years, iterated daily, with a simple signal based on only Bollinger Bands and a simple metric based on only Sharpe Ratio: /src/simulate_portfolio.py
 
 
-Code for running multiple simulations, each with different values for indicators - to determine which combination of indicators and indicator-parameters yields the best results: /src/pypm/optimization.py
+Code for running Grid-Search Optimization - to determine which combination of indicators and indicator-parameters yields the best results: /src/pypm/optimization.py
 
 File with an example of an optimization run on only Bollinger Bands and Sharpe Ratio, where simulations are run on every possible combination of Bollinger n-value (n=SMA-period of middle band line) from [10, 20,..., 100], and Sharpe Benchmark Rate [10, 20,..., 100]. Determines which combination of Bollinger-n and Sharpe BR yields the best portfolio results. 
 
