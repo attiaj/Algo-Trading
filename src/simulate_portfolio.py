@@ -6,11 +6,11 @@ def simulate_portfolio():
 
     print("test change")
     bollinger_n = 20
-    macd_n1 = 5
-    macd_n2 = 34
-    #sharpe_n = 100
-    sharpe_n = 100
-    #According to optimize_portfolio.py, the best results come with a bollinger_n of 20 and a sharpe_n of 80, so let's see the difference
+    #macd_n1 = 5
+    #macd_n2 = 34
+    sharpe_n = 80
+    #According to optimize_portfolio.py, the best results come with a bollinger_n of 20 
+    #and a sharpe_n of 80, so let's see the difference
 
     # Load in data (row = date, column = symbol)
     symbols: List[str] = data_io.get_all_symbols()
@@ -18,8 +18,8 @@ def simulate_portfolio():
     #print(prices)
 
     # Using the Bollinger Band outer band crossover as a signal, equity curve ends up looking like a leveraged S&P
-    #_bollinger = signals.create_bollinger_band_signal
-    #signal = prices.apply(_bollinger, args=(bollinger_n,), axis=0)
+    _bollinger = signals.create_bollinger_band_signal
+    signal = prices.apply(_bollinger, args=(bollinger_n,), axis=0)
     #with pd.option_context('display.min_rows', 50, 'display.max_columns', 28, 'display.width', 0):
     #    print(signal)
 
@@ -30,10 +30,10 @@ def simulate_portfolio():
     #    print(signal)
     
     #Using a combination of the 2 signals, we get no buy or sell signals, so nothing happens
-    _bollinger_macd = signals.create_bollinger_macd_signal
-    signal = prices.apply(_bollinger_macd, args=(bollinger_n, macd_n1, macd_n2,), axis=0)
-    with pd.option_context('display.min_rows', 50, 'display.max_columns', 28, 'display.width', 0):
-        print(signal)
+    #_bollinger_macd = signals.create_bollinger_macd_signal
+    #signal = prices.apply(_bollinger_macd, args=(bollinger_n, macd_n1, macd_n2,), axis=0)
+    #with pd.option_context('display.min_rows', 50, 'display.max_columns', 28, 'display.width', 0):
+    #    print(signal)
 
     # Use a rolling sharpe ratio approximation as a preference matrix
     _sharpe = metrics.calculate_rolling_sharpe_ratio

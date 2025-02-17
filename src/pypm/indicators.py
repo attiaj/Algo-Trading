@@ -1,5 +1,10 @@
+import datetime
+from typing import Callable
+
 import pandas as pd
-from pypm.data_io import load_eod_data
+import numpy as np
+import matplotlib.pyplot as plt
+from data_io import load_eod_data
 
 
 def calculate_simple_moving_average(series: pd.Series, n: int=20) -> pd.Series:
@@ -37,6 +42,35 @@ def calculate_bollinger_bands(series: pd.Series, n: int=20) -> pd.DataFrame:
         'lower': sma - 2 * stdev
     })
 
+def calculate_rsi(over: pd.Series, fn_roll: Callable) -> pd.Series:
+    #https://stackoverflow.com/questions/20526414/relative-strength-index-in-python-pandas
+    #https://www.investopedia.com/terms/r/rsi.asp
+    
+    # Get the difference in price from previous step
+    delta = over.diff()
+    # Get rid of the first row, which is NaN since it did not have a previous row to calculate the differences
+    delta = delta[1:] 
+
+    # Make the positive gains (up) and negative gains (down) Series
+    up, down = delta.clip(lower=0), delta.clip(upper=0).abs()
+
+    roll_up, roll_down = fn_roll(up), fn_roll(down)
+    rs = roll_up / roll_down
+    rsi = 100.0 - (100.0 / (1.0 + rs))
+
+    # Avoid division-by-zero if `roll_down` is zero
+    # This prevents inf and/or nan values.
+    rsi[:] = np.select([roll_down == 0, roll_up == 0, True], [100, 0, rsi])
+    # rsi = rsi.case_when([((roll_down == 0), 100), ((roll_up == 0), 0)])  # This alternative to np.select works only for pd.__version__ >= 2.2.0.
+    rsi.name = 'rsi'
+
+    # Assert range
+    #valid_rsi = rsi[length - 1:]
+    #assert ((0 <= valid_rsi) & (valid_rsi <= 100)).all()
+    # Note: rsi[:length - 1] is excluded from above assertion because it is NaN for SMA.
+
+    return rsi
+
 
 def calculate_money_flow_volume_series(df: pd.DataFrame) -> pd.Series:
     """
@@ -67,7 +101,13 @@ if __name__ == '__main__':
 
     bollinger_bands = calculate_bollinger_bands(closes, 100)
     bollinger_bands = bollinger_bands.assign(closes=closes)
-    bollinger_bands.plot()
+    #bollinger_bands.plot()
+
+    length = 14 #length of ema/sma/rma for rsi
+    #rsi_ema = calculate_rsi(closes, lambda s: s.ewm(span=length).mean())
+    rsi_sma = calculate_rsi(closes, lambda s: s.rolling(length).mean())
+    #rsi_rma = calculate_rsi(closes, lambda s: s.ewm(alpha=1 / length).mean())  # Approximates TradingView.
+    rsi_sma.plot()
 
     cmf = calculate_chaikin_money_flow(data)
     # cmf.plot()
