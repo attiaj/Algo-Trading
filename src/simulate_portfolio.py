@@ -6,6 +6,7 @@ def simulate_portfolio():
 
     print("test change")
     bollinger_n = 20
+    rsi_length = 14
     #macd_n1 = 5
     #macd_n2 = 34
     sharpe_n = 80
@@ -18,10 +19,13 @@ def simulate_portfolio():
     #print(prices)
 
     # Using the Bollinger Band outer band crossover as a signal, equity curve ends up looking like a leveraged S&P
-    _bollinger = signals.create_bollinger_band_signal
-    signal = prices.apply(_bollinger, args=(bollinger_n,), axis=0)
+    #_bollinger = signals.create_bollinger_band_signal
+    #signal = prices.apply(_bollinger, args=(bollinger_n,), axis=0)
     #with pd.option_context('display.min_rows', 50, 'display.max_columns', 28, 'display.width', 0):
     #    print(signal)
+
+    _rsi = signals.create_rsi_sma_signal
+    signal = prices.apply(_rsi, args=(rsi_length,), axis=0)
 
     #Using the macd cross past 0 as a signal, equity curve ends up quite worse than the S&P
     #_macd = signals.create_macd_signal

@@ -4,7 +4,7 @@ from typing import Callable
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from data_io import load_eod_data
+from pypm.data_io import load_eod_data
 
 
 def calculate_simple_moving_average(series: pd.Series, n: int=20) -> pd.Series:
@@ -45,7 +45,7 @@ def calculate_bollinger_bands(series: pd.Series, n: int=20) -> pd.DataFrame:
 def calculate_rsi(over: pd.Series, fn_roll: Callable) -> pd.Series:
     #https://stackoverflow.com/questions/20526414/relative-strength-index-in-python-pandas
     #https://www.investopedia.com/terms/r/rsi.asp
-    
+
     # Get the difference in price from previous step
     delta = over.diff()
     # Get rid of the first row, which is NaN since it did not have a previous row to calculate the differences
