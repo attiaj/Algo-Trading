@@ -20,6 +20,3 @@ Code for running Grid-Search Optimization - to determine which combination of in
 
 File with an example of an optimization run on only Bollinger Bands and Sharpe Ratio, where simulations are run on every possible combination of Bollinger n-value (n=SMA-period of middle band line) from [10, 20,..., 100], and Sharpe Benchmark Rate [10, 20,..., 100]. Determines which combination of Bollinger-n and Sharpe BR yields the best portfolio results. 
 
-
-
-Much of the code currently used is sourced/inspired from Chris Conlan's Algorithmic Trading with Python - his instructions on the code and math involved are detailed in his book of the same name.
